@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>codeplayerTest</title>
+	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+
+<style type="text/css">
+	
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "HelveticaNeue-Light", sans-serif;
+}	
+
+#menuBar {
+
+	width: 100%;
+	height: 50px;
+	background-color: #cecece;
+	border-bottom: 1px solid black;
+}	
+
+#logo {
+
+	padding: 11px 0 0 15px;
+	font-weight: bold;
+	font-size: 1.3em;
+	float: left;
+
+}
+
+#buttonDiv {
+	float: right;
+	padding: 9px 15px;
+}
+
+#runButton {
+
+	padding: 5px 10px;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+#toggles {
+	position: relative;
+	top: 10px;
+	width: 249.2px;
+	height: 30px;
+	margin: 0 auto;
+	border: 1px solid black;
+	border-radius: 2px;
+	padding: 0
+
+}
+
+#toggles li {
+	float: left;
+	list-style: none;
+	border-right: 1px solid black;
+	padding: 6px 12px;
+
+}
+
+.clear {
+	clear: both;
+}
+
+.codeContainer {
+	width: 50%;
+	height: 100%;
+	position: relative;
+	float: left;
+}
+
+.codeContainer textarea {
+
+	border: none;
+	border-right: 1px solid black;
+	height: 100%;
+	width: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+	resize: none;
+}
+
+.codeLabel {
+
+	position: absolute;
+	right: 15px;
+	top: 20px;
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 5px 13px;
+	font-weight: bold;
+}
+
+#CSSContainer, #JSContainer {
+	display: none;
+}
+
+.selected {
+	background-color: gray;
+}
+
+iframe {
+	background-color: green;
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(function() {
+	function codeLabelHover(){
+
+		setTimeout(function(){
+
+			$('#htmlHover').fadeIn();
+			$('#cssHover').fadeIn();
+			$('#jsHover').fadeIn();
+			$('#resultHover').fadeIn();
+
+		},300);
+
+	}
+	
+	var windowsHeight = $(window).height();
+	var menuBarHeight = $('#menuBar').height();
+	var codeContainerHeight = windowsHeight - menuBarHeight;
+
+	$('.codeContainer').css('height', codeContainerHeight+'px');
+
+	$('.toggle').click(function(){
+
+		$(this).toggleClass('selected');
+
+		var activeDivs = $(this).html();
+
+		$('#'+activeDivs+'Container').toggle();
+
+		var showingDivs = $('.codeContainer').filter(function(){
+
+			return($(this).css('display') != 'none');
+
+		}).length;
+
+		width = 100 / showingDivs;
+
+		$('.codeContainer').css('width', width+'%');
+	});
+
+
+	$('#runButton').click(function(){
+
+		$('iframe').contents().find('html').html('<style>'+$('#cssCode').val()+'</style>'+$('#htmlCode').val());
+
+		document.getElementById('resultFrame').contentWindow.eval($('#jsCode').val());
+
+		
+
+		
+	});
+
+
+	$('#htmlHover').mouseover(function(){
+
+		$(this).fadeOut();
+		codeLabelHover();
+	});
+
+	$('#cssHover').mouseover(function(){
+
+		$(this).fadeOut();
+		codeLabelHover();
+	});
+
+	$('#jsHover').mouseover(function(){
+
+		$(this).fadeOut();
+		codeLabelHover();
+	});
+
+	$('#resultHover').mouseover(function(){
+
+		$(this).fadeOut();
+		codeLabelHover();
+	});
+
+})
+
+	
+
+</script>
+</head>
+<body>
+
+<div id="wrapper">
+	<div id="menuBar">
+		<div id="logo">
+			CodePlayground
+		</div>
+
+		<div id="buttonDiv">
+			<button id="runButton">Run</button>
+		</div>
+
+		<ul id="toggles">
+			<li class="toggle selected">HTML</li>
+			<li class="toggle">CSS</li>	
+			<li class="toggle">JS</li>	
+			<li class="toggle selected" style="border:none">RESULT</li>		
+		</ul>
+	</div>	
+	<div class="clear"></div>
+	<div class="codeContainer" id="HTMLContainer">
+		
+		<div class="codeLabel" id="htmlHover">HTML</div>
+		<textarea id="htmlCode"><div id="test"></div></textarea>
+	</div>
+
+	<div class="codeContainer" id="CSSContainer">
+		
+		<div class="codeLabel" id="cssHover">CSS</div>
+		<textarea id="cssCode">html {background-color: blue;}</textarea>
+	</div>
+
+	<div class="codeContainer" id="JSContainer">
+		
+		<div class="codeLabel" id="jsHover">JS</div>
+		<textarea id="jsCode">alert('hehehe');</textarea>
+	</div>
+
+	<div class="codeContainer" id="RESULTContainer">
+		
+		<div class="codeLabel" id="resultHover">RESULT</div>
+		<iframe id="resultFrame"></iframe>
+	</div>
+</div>	
+
+
+
+
+</body>
+</html>
